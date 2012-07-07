@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<dimen name="player_button_height">35dip</dimen>
+	<dimen name="add_match_text_size">20sp</dimen>
+	<dimen name="match_list_team_name_text_size">20sp</dimen>
+	<dimen name="match_list_team_wins_text_size">20sp</dimen>
+	<dimen name="match_list_last_played_text_size">14sp</dimen>
+	<dimen name="round_list_team_score_text_size">20sp</dimen>
+	<dimen name="round_list_last_played_text_size">14sp</dimen>
+	<dimen name="hands_list_team_name_text_size">20sp</dimen>
+	<dimen name="hands_list_bid_text_size">20sp</dimen>
+	<dimen name="hands_list_cumulative_score_text_size">20sp</dimen>
+	<dimen name="hands_list_score_change_text_size">14sp</dimen>
+	<dimen name="hands_list_tricks_won_text_size">14sp</dimen>
+
+</resources>

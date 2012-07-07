@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/players"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <TextView
+        style="@style/selector_title_centered"
+        android:text="@string/bidding_player" />
+
+    <LinearLayout
+        android:id="@+id/playersToggle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:id="@+id/team1playersToggle"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <ToggleButton
+                style="@style/player_button"/>
+
+            <ToggleButton
+                style="@style/player_button"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/team2playersToggle"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <ToggleButton
+                style="@style/player_button"/>
+
+            <ToggleButton
+                style="@style/player_button"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

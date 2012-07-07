@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical" >
+
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal" >
+
+		<TextView
+			android:id="@+id/team1name"
+			style="@style/hands_team_name" />
+
+		<TextView
+			android:id="@+id/team2name"
+			style="@style/hands_team_name" />
+	</LinearLayout>
+
+	<TextView
+		style="@style/selector_title"
+		android:layout_width="fill_parent"
+		android:padding="5dp"
+		android:text="@string/previous_hands" />
+
+	<View
+		android:layout_width="fill_parent"
+		android:layout_height="1dp"
+		android:background="@android:color/holo_blue_light" />
+
+	<ListView
+		android:id="@+id/android:list"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:transcriptMode="normal" />
+
+	<TextView
+		android:id="@+id/android:empty"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:gravity="center_horizontal"
+		android:text="@string/hands_no_items" />
+
+</LinearLayout>

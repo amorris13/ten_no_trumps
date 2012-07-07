@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bid"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <TextView
+        style="@style/selector_title_centered"
+        android:text="@string/bid" />
+
+    <LinearLayout
+        android:id="@+id/bidsToggle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <ToggleButton style="@style/bid_button" />
+
+            <ToggleButton style="@style/bid_button" />
+
+            <ToggleButton style="@style/bid_button" />
+
+            <ToggleButton style="@style/bid_button" />
+
+            <ToggleButton style="@style/bid_button" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <ToggleButton style="@style/bid_button" />
+
+            <ToggleButton style="@style/bid_button" />
+
+            <ToggleButton style="@style/bid_button" />
+
+            <ToggleButton style="@style/bid_button" />
+
+            <ToggleButton style="@style/bid_button" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <ToggleButton style="@style/bid_button" />
+
+            <ToggleButton style="@style/bid_button" />
+
+            <ToggleButton style="@style/bid_button" />
+
+            <ToggleButton style="@style/bid_button" />
+
+            <ToggleButton style="@style/bid_button" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <ToggleButton style="@style/bid_button" />
+
+            <ToggleButton style="@style/bid_button" />
+
+            <ToggleButton style="@style/bid_button" />
+
+            <ToggleButton style="@style/bid_button" />
+
+            <ToggleButton style="@style/bid_button" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <ToggleButton style="@style/bid_button" />
+
+            <ToggleButton style="@style/bid_button" />
+
+            <ToggleButton style="@style/bid_button" />
+
+            <ToggleButton style="@style/bid_button" />
+
+            <ToggleButton style="@style/bid_button" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <ToggleButton style="@style/bid_button" />
+
+            <ToggleButton style="@style/bid_button" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

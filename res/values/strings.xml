@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="app_name">500 Scorer</string>
+	<string name="createMatch">Create Match</string>
+	<string name="playerAutocomplete">Player Name</string>
+	<string name="new_hand">NEW HAND</string>
+	<string name="new_match">New Match</string>
+	<string name="new_round">New Round</string>
+	<string name="matches_no_items">No matches played yet.\nTap + to create a new match.</string>
+	<string name="rounds_no_items">No rounds played yet</string>
+	<string name="hands_no_items">No hands played yet</string>
+	<string name="score_divider">:</string>
+	<string name="previous_hands">LIST OF HANDS</string>
+	<string name="ok">OK</string>
+	<string name="teams">TEAMS</string>
+	<string name="team_1">Team 1</string>
+	<string name="team_2">Team 2</string>
+	<string name="players_optional_">PLAYERS (OPTIONAL)</string>
+	<string name="bid">BID</string>
+	<string name="list_of_matches">LIST OF MATCHES</string>
+	<string name="bidding_player">BIDDING PLAYER</string>
+	<string name="list_of_rounds">LIST OF ROUNDS</string>
+	<string name="tricks_won">TRICKS WON BY BIDDERS</string>
+	<string name="bidding_team">BIDDING TEAM</string>
+	<string name="rounds">Rounds</string>
+	<string name="hands">Hands</string>
+	<string name="new_hand_title">New Hand</string>
+
+</resources>

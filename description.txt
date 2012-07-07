@@ -1,0 +1,12 @@
+Ever gone away for that summer holiday with a bunch of friends, sat down for a round of 500 and then realised that you forgot to bring a pen and paper so you spend the whole game struggling to remember the score (while struggling to remember how much that bid of 8 diamonds is worth or whether clubs is higher than spades)? 
+
+This simple and stylish application makes it easy to keep track of score while playing 500 and record the results of previous games.  
+
+Features include:
+ - Ability to choose team names and player names (statistics coming in the next version).
+ - Easy bid selection (just takes 4 taps!).
+ - Accurate calculations (takes into account all the subtleties of scoring games: 10 points per trick for the non bidding team, 250 points if you win all 10 tricks but didn't bid high enough, can't win by exceeding 500 points without winning the bid).
+ - Ability to delete previous hands, rounds and matches (in case you've been drinking a little too much wine and accidentally tapped the wrong buttons).
+ - Keeps track of all your previous games (so you can see who won the most rounds during that week away).
+
+Further feature requests are very welcome!

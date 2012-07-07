@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<style name="bid_button">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_weight">1</item>
+		<item name="android:background">@drawable/custom_toggle_button</item>
+	</style>
+
+	<style name="player_button">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">@dimen/player_button_height</item>
+		<item name="android:background">@drawable/custom_toggle_button</item>
+	</style>
+
+	<style name="team_button">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_weight">1</item>
+		<item name="android:background">@drawable/custom_toggle_button</item>
+	</style>
+
+	<style name="selector_title_centered" parent="selector_title">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:gravity">center</item>
+	</style>
+
+	<style name="selector_title">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textColor">@android:color/holo_blue_light</item>
+		<item name="android:textStyle">bold</item>
+	</style>
+
+	<style name="player_autocomplete">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:singleLine">true</item>
+		<item name="android:hint">@string/playerAutocomplete</item>
+		<item name="android:completionThreshold">1</item>
+		<item name="android:inputType">textCapWords</item>
+		<item name="android:textSize">@dimen/add_match_text_size</item>
+	</style>
+
+	<style name="team_autocomplete">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_weight">1</item>
+		<item name="android:completionThreshold">1</item>
+		<item name="android:singleLine">true</item>
+		<item name="android:inputType">textCapWords</item>
+		<item name="android:textSize">@dimen/add_match_text_size</item>
+	</style>
+
+	<style name="hands_team_name">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_weight">1</item>
+		<item name="android:gravity">center</item>
+		<item name="android:textSize">@dimen/hands_list_team_name_text_size</item>
+	</style>
+
+</resources>
