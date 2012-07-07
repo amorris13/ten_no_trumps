@@ -152,9 +152,14 @@ public class DBAdapter extends SQLiteOpenHelper {
     teams.clear();
 
     // Do players first.
-    Cursor playersCursor = getWritableDatabase().query(TABLE_PLAYERS,
-        new String[] { COLUMN_PLAYER_ID, COLUMN_PLAYER_NAME }, null, null,
-        null, null, null);
+    Cursor playersCursor = getWritableDatabase().query(
+        TABLE_PLAYERS,
+        new String[] { COLUMN_PLAYER_ID, COLUMN_PLAYER_NAME },
+        null,
+        null,
+        null,
+        null,
+        null);
     playersCursor.moveToFirst();
     while (!playersCursor.isAfterLast()) {
       Player player = cursorToPlayer(playersCursor);
@@ -167,7 +172,12 @@ public class DBAdapter extends SQLiteOpenHelper {
     Cursor teamsCursor = getWritableDatabase().query(
         TABLE_TEAMS,
         new String[] { COLUMN_TEAM_ID, COLUMN_TEAM_NAME, COLUMN_PLAYER_1,
-            COLUMN_PLAYER_2 }, null, null, null, null, null);
+            COLUMN_PLAYER_2 },
+        null,
+        null,
+        null,
+        null,
+        null);
     teamsCursor.moveToFirst();
     while (!teamsCursor.isAfterLast()) {
       Team team = cursorToTeam(teamsCursor, players);
@@ -181,7 +191,12 @@ public class DBAdapter extends SQLiteOpenHelper {
     Cursor matchesCursor = getWritableDatabase().query(
         TABLE_MATCHES,
         new String[] { COLUMN_MATCH_ID, COLUMN_TEAM_1, COLUMN_TEAM_2,
-            COLUMN_DATE }, null, null, null, null, null);
+            COLUMN_DATE },
+        null,
+        null,
+        null,
+        null,
+        null);
     matchesCursor.moveToFirst();
     while (!matchesCursor.isAfterLast()) {
       Match match = cursorToMatch(matchesCursor, teams);
@@ -193,9 +208,14 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // Do rounds
     Map<Long, Round> rounds = Maps.newHashMap();
-    Cursor roundsCursor = getWritableDatabase().query(TABLE_ROUNDS,
-        new String[] { COLUMN_ROUND_ID, COLUMN_MATCH_ID, COLUMN_DATE }, null,
-        null, null, null, null);
+    Cursor roundsCursor = getWritableDatabase().query(
+        TABLE_ROUNDS,
+        new String[] { COLUMN_ROUND_ID, COLUMN_MATCH_ID, COLUMN_DATE },
+        null,
+        null,
+        null,
+        null,
+        null);
     roundsCursor.moveToFirst();
     while (!roundsCursor.isAfterLast()) {
       Round round = cursorToRound(roundsCursor, matchesMap);
@@ -209,7 +229,12 @@ public class DBAdapter extends SQLiteOpenHelper {
         TABLE_HANDS,
         new String[] { COLUMN_HAND_ID, COLUMN_ROUND_ID, COLUMN_BIDDING_TEAM_ID,
             COLUMN_BIDDING_PLAYER_ID, COLUMN_BID, COLUMN_TRICKS_WON,
-            COLUMN_DATE }, null, null, null, null, null);
+            COLUMN_DATE },
+        null,
+        null,
+        null,
+        null,
+        null);
     handsCursor.moveToFirst();
     while (!handsCursor.isAfterLast()) {
       Hand hand = cursorToHand(handsCursor, rounds, teams, players);
@@ -270,22 +295,29 @@ public class DBAdapter extends SQLiteOpenHelper {
     return hand;
   }
 
-  public long addHand(Hand hand) {
-    long id = getWritableDatabase().insert(TABLE_HANDS, null,
+  public void addHand(Hand hand) {
+    long id = getWritableDatabase().insert(
+        TABLE_HANDS,
+        null,
         createHandValues(hand));
+    hand.setId(id);
     requestBackup();
-    return id;
   }
 
   public void updateHand(Hand hand) {
-    getWritableDatabase().update(TABLE_HANDS, createHandValues(hand),
-        COLUMN_HAND_ID + " = " + hand.getId(), null);
+    getWritableDatabase().update(
+        TABLE_HANDS,
+        createHandValues(hand),
+        COLUMN_HAND_ID + " = " + hand.getId(),
+        null);
     requestBackup();
   }
 
   public void removeHand(Hand hand) {
-    getWritableDatabase().delete(TABLE_HANDS,
-        COLUMN_HAND_ID + " = " + hand.getId(), null);
+    getWritableDatabase().delete(
+        TABLE_HANDS,
+        COLUMN_HAND_ID + " = " + hand.getId(),
+        null);
     requestBackup();
   }
 
@@ -303,22 +335,29 @@ public class DBAdapter extends SQLiteOpenHelper {
     return values;
   }
 
-  public long addRound(Round round) {
-    long id = getWritableDatabase().insert(TABLE_ROUNDS, null,
+  public void addRound(Round round) {
+    long id = getWritableDatabase().insert(
+        TABLE_ROUNDS,
+        null,
         createRoundValues(round));
     requestBackup();
-    return id;
+    round.setId(id);
   }
 
   public void updateRound(Round round) {
-    getWritableDatabase().update(TABLE_ROUNDS, createRoundValues(round),
-        COLUMN_ROUND_ID + " = " + round.getId(), null);
+    getWritableDatabase().update(
+        TABLE_ROUNDS,
+        createRoundValues(round),
+        COLUMN_ROUND_ID + " = " + round.getId(),
+        null);
     requestBackup();
   }
 
   public void removeRound(Round round) {
-    getWritableDatabase().delete(TABLE_ROUNDS,
-        COLUMN_ROUND_ID + " = " + round.getId(), null);
+    getWritableDatabase().delete(
+        TABLE_ROUNDS,
+        COLUMN_ROUND_ID + " = " + round.getId(),
+        null);
     requestBackup();
   }
 
@@ -329,22 +368,29 @@ public class DBAdapter extends SQLiteOpenHelper {
     return values;
   }
 
-  public long addMatch(Match match) {
-    long id = getWritableDatabase().insert(TABLE_MATCHES, null,
+  public void addMatch(Match match) {
+    long id = getWritableDatabase().insert(
+        TABLE_MATCHES,
+        null,
         createMatchValues(match));
+    match.setId(id);
     requestBackup();
-    return id;
   }
 
   public void updateMatch(Match match) {
-    getWritableDatabase().update(TABLE_MATCHES, createMatchValues(match),
-        COLUMN_MATCH_ID + " = " + match.getId(), null);
+    getWritableDatabase().update(
+        TABLE_MATCHES,
+        createMatchValues(match),
+        COLUMN_MATCH_ID + " = " + match.getId(),
+        null);
     requestBackup();
   }
 
   public void removeMatch(Match match) {
-    getWritableDatabase().delete(TABLE_MATCHES,
-        COLUMN_MATCH_ID + " = " + match.getId(), null);
+    getWritableDatabase().delete(
+        TABLE_MATCHES,
+        COLUMN_MATCH_ID + " = " + match.getId(),
+        null);
     requestBackup();
   }
 
@@ -356,24 +402,24 @@ public class DBAdapter extends SQLiteOpenHelper {
     return values;
   }
 
-  public long addTeam(Team team) {
+  public void addTeam(Team team) {
     ContentValues values = new ContentValues();
     values.put(COLUMN_TEAM_NAME, team.getName());
-    values.put(COLUMN_PLAYER_1, team.getPlayer1() != null ? team.getPlayer1()
-        .getId() : -1);
-    values.put(COLUMN_PLAYER_2, team.getPlayer2() != null ? team.getPlayer2()
-        .getId() : -1);
+    values.put(COLUMN_PLAYER_1, team.getPlayer1() != null ? team
+        .getPlayer1().getId() : -1);
+    values.put(COLUMN_PLAYER_2, team.getPlayer2() != null ? team
+        .getPlayer2().getId() : -1);
     long id = getWritableDatabase().insert(TABLE_TEAMS, null, values);
+    team.setId(id);
     requestBackup();
-    return id;
   }
 
-  public long addPlayer(Player player) {
+  public void addPlayer(Player player) {
     ContentValues values = new ContentValues();
     values.put(COLUMN_PLAYER_NAME, player.getName());
     long id = getWritableDatabase().insert(TABLE_PLAYERS, null, values);
+    player.setId(id);
     requestBackup();
-    return id;
   }
 
   private void requestBackup() {

@@ -56,7 +56,7 @@ public class Application extends OnStateChangedReporter implements
     Preconditions.checkArgument(
         getPlayer(player.getName()) == null,
         "There is already a player with the name " + player.getName());
-    player.setId(database.addPlayer(player));
+    database.addPlayer(player);
     mPlayers.put(player.getId(), player);
     notifyStateChanged();
   }
@@ -82,7 +82,7 @@ public class Application extends OnStateChangedReporter implements
     Preconditions.checkArgument(
         getTeam(team.getName()) == null,
         "Team with name " + team.getName() + "already exists");
-    team.setId(database.addTeam(team));
+    database.addTeam(team);
     mTeams.put(team.getId(), team);
     notifyStateChanged();
   }
@@ -105,7 +105,7 @@ public class Application extends OnStateChangedReporter implements
   }
 
   public void addMatch(Match match) {
-    match.setId(database.addMatch(match));
+    database.addMatch(match);
     match.addOnStateChangedListener(this);
     mMatches.add(match);
     notifyStateChanged();
@@ -139,7 +139,7 @@ public class Application extends OnStateChangedReporter implements
     Preconditions.checkArgument(
         round.getMatch() != null,
         "Match for round must be specified.");
-    round.setId(database.addRound(round));
+    database.addRound(round);
     round.getMatch().addRound(round);
   }
 
@@ -156,7 +156,7 @@ public class Application extends OnStateChangedReporter implements
     Preconditions.checkArgument(
         hand.getRound() != null,
         "Round for hand must be specified.");
-    hand.setId(database.addHand(hand));
+    database.addHand(hand);
     hand.getRound().addHand(hand);
   }
 
