@@ -9,4 +9,4 @@ Features include:
  - Ability to delete previous hands, rounds and matches (in case you've been drinking a little too much wine and accidentally tapped the wrong buttons).
  - Keeps track of all your previous games (so you can see who won the most rounds during that week away).
 
-The best 500 scorecard on the Play Store!
+The best 500 scorecard in the Play Store!
