@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,29 +86,14 @@ public class RoundList extends SherlockListActivity implements OnStateChangedLis
       }
     });
 
+    final Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
     lv.setOnItemLongClickListener(new OnItemLongClickListener() {
       @Override
       public boolean onItemLongClick(AdapterView<?> parent, View view,
           final int position, long id) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(RoundList.this);
-        builder.setCancelable(true);
-        builder.setTitle("Delete?");
-        builder.setInverseBackgroundForced(true);
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-          @Override
-          public void onClick(DialogInterface dialog, int which) {
-            Round round = mRounds.get(position);
-            application.deleteRound(round);
-            dialog.dismiss();
-          }
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-          @Override
-          public void onClick(DialogInterface dialog, int which) {
-            dialog.dismiss();
-          }
-        });
-        AlertDialog alert = builder.create();
+        AlertDialog alert = createDeleteAlertDialog((Round) parent.getItemAtPosition(position));
+        vibrator.vibrate(100);
         alert.show();
         return false;
       }
@@ -223,5 +209,27 @@ public class RoundList extends SherlockListActivity implements OnStateChangedLis
   @Override
   public void onStateChanged() {
     mAdapter.notifyDataSetChanged();
+  }
+
+  private AlertDialog createDeleteAlertDialog(final Round round) {
+    AlertDialog.Builder builder = new AlertDialog.Builder(RoundList.this);
+    builder.setCancelable(true);
+    builder.setTitle("Delete?");
+    builder.setInverseBackgroundForced(true);
+    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        application.deleteRound(round);
+        dialog.dismiss();
+      }
+    });
+    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        dialog.dismiss();
+      }
+    });
+    AlertDialog alert = builder.create();
+    return alert;
   }
 }

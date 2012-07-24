@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -93,40 +94,45 @@ public class HandList extends SherlockListActivity implements
     mAdapter = new HandArrayAdapter(this, R.layout.round_list_item, mHands);
     lv.setAdapter(mAdapter);
 
+    final Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
     lv.setSelection(lv.getCount() - 1);
     lv.setOnItemLongClickListener(new OnItemLongClickListener() {
       @Override
       public boolean onItemLongClick(AdapterView<?> parent, View view,
           final int position, long id) {
-        showDeleteDialog(position);
-        return false;
-      }
+        AlertDialog alert = createDeleteAlertDialog((Hand) parent
+            .getItemAtPosition(position));
+        vibrator.vibrate(100);
 
-      private void showDeleteDialog(final int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(HandList.this);
-        builder.setCancelable(true);
-        builder.setTitle("Delete?");
-        builder.setInverseBackgroundForced(true);
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-          @Override
-          public void onClick(DialogInterface dialog, int which) {
-            Hand hand = mHands.get(position);
-            application.deleteHand(hand);
-            dialog.dismiss();
-          }
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-          @Override
-          public void onClick(DialogInterface dialog, int which) {
-            dialog.dismiss();
-          }
-        });
-        AlertDialog alert = builder.create();
         alert.show();
+        return false;
       }
     });
 
     mRound.addOnStateChangedListener(this);
+  }
+
+  private AlertDialog createDeleteAlertDialog(final Hand hand) {
+    AlertDialog.Builder builder = new AlertDialog.Builder(HandList.this);
+    builder.setCancelable(true);
+    builder.setTitle("Delete?");
+    builder.setInverseBackgroundForced(true);
+    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        application.deleteHand(hand);
+        dialog.dismiss();
+      }
+    });
+    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        dialog.dismiss();
+      }
+    });
+    AlertDialog alert = builder.create();
+    return alert;
   }
 
   private void highlightTitle() {

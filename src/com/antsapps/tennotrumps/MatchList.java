@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -59,29 +60,15 @@ public class MatchList extends SherlockListActivity implements OnStateChangedLis
       }
     });
 
+    final Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
     lv.setOnItemLongClickListener(new OnItemLongClickListener() {
       @Override
       public boolean onItemLongClick(AdapterView<?> parent, View view,
           final int position, long id) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MatchList.this);
-        builder.setCancelable(true);
-        builder.setTitle("Delete?");
-        builder.setInverseBackgroundForced(true);
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-          @Override
-          public void onClick(DialogInterface dialog, int which) {
-            Match match = mMatches.get(position);
-            application.deleteMatch(match);
-            dialog.dismiss();
-          }
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-          @Override
-          public void onClick(DialogInterface dialog, int which) {
-            dialog.dismiss();
-          }
-        });
-        AlertDialog alert = builder.create();
+        AlertDialog alert = createDeleteAlertDialog((Match) parent
+            .getItemAtPosition(position));
+        vibrator.vibrate(100);
         alert.show();
         return false;
       }
@@ -186,6 +173,28 @@ public class MatchList extends SherlockListActivity implements OnStateChangedLis
       ((TextView) v.findViewById(id)).setTypeface(Typeface.DEFAULT,
           Typeface.NORMAL);
     }
+  }
+
+  private AlertDialog createDeleteAlertDialog(final Match match) {
+    AlertDialog.Builder builder = new AlertDialog.Builder(MatchList.this);
+    builder.setCancelable(true);
+    builder.setTitle("Delete?");
+    builder.setInverseBackgroundForced(true);
+    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        application.deleteMatch(match);
+        dialog.dismiss();
+      }
+    });
+    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        dialog.dismiss();
+      }
+    });
+    AlertDialog alert = builder.create();
+    return alert;
   }
 
   @Override
