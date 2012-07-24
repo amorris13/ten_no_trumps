@@ -2,9 +2,7 @@ package com.antsapps.tennotrumps;
 
 import java.util.List;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,9 +10,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -24,6 +19,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockListActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.antsapps.tennotrumps.backend.Application;
 import com.antsapps.tennotrumps.backend.Match;
 import com.antsapps.tennotrumps.backend.OnStateChangedListener;
@@ -32,7 +32,7 @@ import com.antsapps.tennotrumps.backend.Team;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
-public class RoundList extends ListActivity implements OnStateChangedListener {
+public class RoundList extends SherlockListActivity implements OnStateChangedListener {
   private Application application;
 
   private Match mMatch;
@@ -54,7 +54,7 @@ public class RoundList extends ListActivity implements OnStateChangedListener {
 
     setContentView(R.layout.round_list);
 
-    ActionBar actionBar = getActionBar();
+    ActionBar actionBar = getSupportActionBar();
     actionBar.setDisplayHomeAsUpEnabled(true);
 
     Team team1 = mMatch.getTeam1();
@@ -132,7 +132,7 @@ public class RoundList extends ListActivity implements OnStateChangedListener {
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
-    MenuInflater inflater = getMenuInflater();
+    MenuInflater inflater = getSupportMenuInflater();
     inflater.inflate(R.menu.round_list, menu);
     return true;
   }

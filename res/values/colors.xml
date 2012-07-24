@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="win">@android:color/holo_green_dark</color>
-    <color name="lose">@android:color/holo_red_dark</color>
+	<color name="win">@color/holo_green_dark</color>
+	<color name="lose">@color/holo_red_dark</color>
+	<color name="holo_blue_light">#33B5E5</color>
+	<color name="holo_green_dark">#669900</color>
+	<color name="holo_red_dark">#CC0000</color>
 
 </resources>

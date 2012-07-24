@@ -1,44 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	tools:context=".AddHand" >
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical" >
 
-        <com.antsapps.tennotrumps.TeamSelector
-            android:id="@+id/team_selector"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+		<com.antsapps.tennotrumps.TeamSelector
+			android:id="@+id/team_selector"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content" />
 
-        <com.antsapps.tennotrumps.PlayerSelector
-            android:id="@+id/player_selector"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+		<com.antsapps.tennotrumps.PlayerSelector
+			android:id="@+id/player_selector"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content" />
 
-        <com.antsapps.tennotrumps.ButtonsBidSelector
-            android:id="@+id/bid_selector"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+		<com.antsapps.tennotrumps.ButtonsBidSelector
+			android:id="@+id/bid_selector"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content" />
 
-        <com.antsapps.tennotrumps.SpinnerResultSelector
-            android:id="@+id/result_selector"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+		<com.antsapps.tennotrumps.SpinnerResultSelector
+			android:id="@+id/result_selector"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content" />
 
-        <com.antsapps.tennotrumps.ResultsPreview
-            android:id="@+id/results_preview"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+		<com.antsapps.tennotrumps.ResultsPreview
+			android:id="@+id/results_preview"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content" />
 
-        <Button
-            android:id="@+id/ok_button"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:onClick="onOKClick"
-            android:text="@string/ok" />
-    </LinearLayout>
+		<Button
+			android:id="@+id/ok_button"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:onClick="onOKClick"
+			android:text="@string/ok" />
+	</LinearLayout>
 
 </ScrollView>

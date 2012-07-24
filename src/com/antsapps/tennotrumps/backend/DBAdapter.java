@@ -285,7 +285,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     long id = handsCursor.getLong(0);
     Team biddingTeam = teams.get(handsCursor.getLong(2));
     Player biddingPlayer = players.get(handsCursor.getLong(3));
-    Bid bid = handsCursor.getString(4).isEmpty() ? null : Bid
+    Bid bid = handsCursor.getString(4).length() == 0 ? null : Bid
         .valueOf(handsCursor.getString(4));
     int tricksWon = handsCursor.getInt(5);
     Date date = new Date(handsCursor.getLong(6));

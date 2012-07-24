@@ -2,9 +2,7 @@ package com.antsapps.tennotrumps;
 
 import java.util.List;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,9 +12,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -25,6 +20,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockListActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.antsapps.tennotrumps.backend.Application;
 import com.antsapps.tennotrumps.backend.Hand;
 import com.antsapps.tennotrumps.backend.Match;
@@ -33,7 +32,8 @@ import com.antsapps.tennotrumps.backend.Round;
 import com.antsapps.tennotrumps.backend.Team;
 import com.google.common.base.Preconditions;
 
-public class HandList extends ListActivity implements OnStateChangedListener {
+public class HandList extends SherlockListActivity implements
+    OnStateChangedListener {
 
   private Application application;
 
@@ -62,16 +62,19 @@ public class HandList extends ListActivity implements OnStateChangedListener {
       Log.i(TAG, "roundId = " + roundId);
       mRound = application.getMatch(matchId).getRound(roundId);
     } else {
-      Preconditions.checkArgument(getIntent().hasExtra(Match.ID_TAG),
+      Preconditions.checkArgument(
+          getIntent().hasExtra(Match.ID_TAG),
           "Intent to start RoundList must contain a Match.ID_TAG");
-      Preconditions.checkArgument(getIntent().hasExtra(Round.ID_TAG),
+      Preconditions.checkArgument(
+          getIntent().hasExtra(Round.ID_TAG),
           "Intent to start RoundList must contain a Round.ID_TAG");
-      mRound = application.getMatch(getIntent().getLongExtra(Match.ID_TAG, 0))
-          .getRound(getIntent().getLongExtra(Round.ID_TAG, 0));
+      mRound = application
+          .getMatch(getIntent().getLongExtra(Match.ID_TAG, 0)).getRound(
+              getIntent().getLongExtra(Round.ID_TAG, 0));
     }
     setContentView(R.layout.hand_list);
 
-    ActionBar actionBar = getActionBar();
+    com.actionbarsherlock.app.ActionBar actionBar = getSupportActionBar();
     actionBar.setDisplayHomeAsUpEnabled(true);
 
     Log.i(TAG, "Round = " + mRound);
@@ -131,10 +134,10 @@ public class HandList extends ListActivity implements OnStateChangedListener {
     highlightTeamName(team2, (TextView) findViewById(R.id.team2name));
   }
 
-  private void highlightTeamName(Team team, TextView teamNameView){
-    if(mRound.isFinished()){
+  private void highlightTeamName(Team team, TextView teamNameView) {
+    if (mRound.isFinished()) {
       teamNameView.setTypeface(Typeface.DEFAULT, Typeface.NORMAL);
-      if(mRound.getWinner() == team){
+      if (mRound.getWinner() == team) {
         teamNameView.setTextColor(getResources().getColor(R.color.win));
       } else {
         teamNameView.setTextColor(getResources().getColor(R.color.lose));
@@ -148,7 +151,8 @@ public class HandList extends ListActivity implements OnStateChangedListener {
   @Override
   public void onStart() {
     super.onStart();
-    ArrayAdapter<Hand> adapter = (ArrayAdapter<Hand>) getListView().getAdapter();
+    ArrayAdapter<Hand> adapter = (ArrayAdapter<Hand>) getListView()
+        .getAdapter();
     adapter.notifyDataSetChanged();
   }
 
@@ -161,7 +165,7 @@ public class HandList extends ListActivity implements OnStateChangedListener {
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
-    MenuInflater inflater = getMenuInflater();
+    MenuInflater inflater = getSupportMenuInflater();
     inflater.inflate(R.menu.hand_list, menu);
     return true;
   }
@@ -244,12 +248,24 @@ public class HandList extends ListActivity implements OnStateChangedListener {
 
       Hand h = hands.get(position);
       if (h != null) {
-        formatBid(v, team1, h, R.id.team1bid, R.id.team1trickswon,
-            R.id.team1scoreAfterBid, R.id.team1scorechange,
+        formatBid(
+            v,
+            team1,
+            h,
+            R.id.team1bid,
+            R.id.team1trickswon,
+            R.id.team1scoreAfterBid,
+            R.id.team1scorechange,
             position == hands.size() - 1);
 
-        formatBid(v, team2, h, R.id.team2bid, R.id.team2trickswon,
-            R.id.team2scoreAfterBid, R.id.team2scorechange,
+        formatBid(
+            v,
+            team2,
+            h,
+            R.id.team2bid,
+            R.id.team2trickswon,
+            R.id.team2scoreAfterBid,
+            R.id.team2scorechange,
             position == hands.size() - 1);
       }
 
@@ -257,7 +273,8 @@ public class HandList extends ListActivity implements OnStateChangedListener {
     }
 
     private void formatBid(View view, Team team, Hand hand, int bidId,
-        int tricksWonId, int scoreAfterBidId, int scoreChangeId, boolean mostRecent) {
+        int tricksWonId, int scoreAfterBidId, int scoreChangeId,
+        boolean mostRecent) {
       TextView teambid = (TextView) view.findViewById(bidId);
       if (hand.getBiddingTeam() == team) {
         teambid.setText(hand.getBid().getSymbol());
@@ -268,7 +285,8 @@ public class HandList extends ListActivity implements OnStateChangedListener {
 
       TextView teamScoreAfterBid = (TextView) view
           .findViewById(scoreAfterBidId);
-      teamScoreAfterBid.setText(Integer.toString(mRound.getScoreAfterHand(team,
+      teamScoreAfterBid.setText(Integer.toString(mRound.getScoreAfterHand(
+          team,
           hand)));
       if (!mostRecent) {
         teamScoreAfterBid.setPaintFlags(teamScoreAfterBid.getPaintFlags()

@@ -1,6 +1,5 @@
 package com.antsapps.tennotrumps;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -8,6 +7,7 @@ import android.widget.Button;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.actionbarsherlock.app.SherlockActivity;
 import com.antsapps.tennotrumps.BidSelector.OnBidSelectedListener;
 import com.antsapps.tennotrumps.ResultSelector.OnTricksWonSelectedListener;
 import com.antsapps.tennotrumps.TeamSelector.OnTeamSelectedListener;
@@ -19,7 +19,7 @@ import com.antsapps.tennotrumps.backend.Round;
 import com.antsapps.tennotrumps.backend.Team;
 import com.google.common.base.Preconditions;
 
-public class AddHand extends Activity {
+public class AddHand extends SherlockActivity {
   private Application application;
 
   private static final String TAG = "AddHand";

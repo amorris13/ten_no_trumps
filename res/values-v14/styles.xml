@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<style name="Theme.Sherlock.Light.DarkActionBar.CustomToggle" parent="@style/Theme.Sherlock.Light.DarkActionBar">
+		<item name="android:buttonStyleToggle">@style/Widget.Button.Toggle.Custom</item>
+	</style>
+
+	<style name="Widget.Button.Toggle.Custom" parent="@android:Widget.Button.Toggle">
+		<item name="android:background">@drawable/custom_toggle_button</item>
+	</style>
+
+</resources>

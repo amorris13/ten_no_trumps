@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -19,6 +18,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockActivity;
 import com.antsapps.tennotrumps.backend.Application;
 import com.antsapps.tennotrumps.backend.Match;
 import com.antsapps.tennotrumps.backend.Player;
@@ -28,7 +28,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-public class AddMatch extends Activity {
+public class AddMatch extends SherlockActivity {
   public Application application;
 
   private Collection<Team> allTeams;
@@ -141,7 +141,7 @@ public class AddMatch extends Activity {
         int i = 0;
         for (AutoCompleteTextView playerView : playerViews.get(teamView)) {
           String playerName = (playerView.getText().toString());
-          if (!playerName.isEmpty()) {
+          if (playerName.length() > 0) {
             Player player = application.getPlayer(playerName);
             if (player == null) {
               player = new Player(playerName);
@@ -181,7 +181,7 @@ public class AddMatch extends Activity {
       uniqueTeams &= teamSet.add(teamView.getText().toString());
       for (AutoCompleteTextView playerView : playerViews.get(teamView)) {
         String playerName = (playerView.getText().toString());
-        if (!playerName.isEmpty()) {
+        if (playerName.length() > 0) {
           uniquePlayers &= playerSet.add(playerName);
         }
       }

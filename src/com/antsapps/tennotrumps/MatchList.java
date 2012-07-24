@@ -3,7 +3,6 @@ package com.antsapps.tennotrumps;
 import java.util.List;
 
 import android.app.AlertDialog;
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,9 +11,6 @@ import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -24,13 +20,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockListActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.antsapps.tennotrumps.backend.Application;
 import com.antsapps.tennotrumps.backend.Match;
 import com.antsapps.tennotrumps.backend.OnStateChangedListener;
 import com.antsapps.tennotrumps.backend.Team;
 import com.google.common.collect.Lists;
 
-public class MatchList extends ListActivity implements OnStateChangedListener {
+public class MatchList extends SherlockListActivity implements OnStateChangedListener {
   private Application application;
 
   private List<Match> mMatches = null;
@@ -106,7 +106,7 @@ public class MatchList extends ListActivity implements OnStateChangedListener {
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
-    MenuInflater inflater = getMenuInflater();
+    MenuInflater inflater = getSupportMenuInflater();
     inflater.inflate(R.menu.match_list, menu);
     return true;
   }
