@@ -1,0 +1,5 @@
+Now compatible with Froyo and Gingerbread devices!
+
+Minor improvements:
+ - Back button behaviour fixed
+ - Vibrate on long press
