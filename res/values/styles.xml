@@ -3,18 +3,18 @@
 
 	<style name="bid_button">
 		<item name="android:layout_width">fill_parent</item>
-		<item name="android:layout_height">@dimen/bid_button_height</item>
+		<item name="android:layout_height">wrap_content</item>
 		<item name="android:layout_weight">1</item>
 	</style>
 
 	<style name="player_button">
 		<item name="android:layout_width">fill_parent</item>
-		<item name="android:layout_height">@dimen/player_button_height</item>
+		<item name="android:layout_height">wrap_content</item>
 	</style>
 
 	<style name="team_button">
 		<item name="android:layout_width">fill_parent</item>
-		<item name="android:layout_height">@dimen/team_button_height</item>
+		<item name="android:layout_height">wrap_content</item>
 		<item name="android:layout_weight">1</item>
 	</style>
 

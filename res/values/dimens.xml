@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<dimen name="player_button_height">35dip</dimen>
-	<dimen name="bid_button_height">45dip</dimen>
-	<dimen name="team_button_height">45dip</dimen>
 	<dimen name="add_match_text_size">20sp</dimen>
 	<dimen name="match_list_team_name_text_size">20sp</dimen>
 	<dimen name="match_list_team_wins_text_size">20sp</dimen>

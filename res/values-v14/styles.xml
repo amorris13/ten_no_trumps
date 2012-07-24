@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
+  
+  <style name="bid_button">
+    <item name="android:layout_width">fill_parent</item>
+    <item name="android:layout_height">@dimen/bid_button_height</item>
+    <item name="android:layout_weight">1</item>
+  </style>
+
+  <style name="player_button">
+    <item name="android:layout_width">fill_parent</item>
+    <item name="android:layout_height">@dimen/player_button_height</item>
+  </style>
+
+  <style name="team_button">
+    <item name="android:layout_width">fill_parent</item>
+    <item name="android:layout_height">@dimen/team_button_height</item>
+    <item name="android:layout_weight">1</item>
+  </style>
 
 	<style name="Theme.Sherlock.Light.DarkActionBar.CustomToggle" parent="@style/Theme.Sherlock.Light.DarkActionBar">
 		<item name="android:buttonStyleToggle">@style/Widget.Button.Toggle.Custom</item>
