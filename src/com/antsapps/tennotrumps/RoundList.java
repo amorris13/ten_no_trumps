@@ -92,7 +92,8 @@ public class RoundList extends SherlockListActivity implements OnStateChangedLis
       @Override
       public boolean onItemLongClick(AdapterView<?> parent, View view,
           final int position, long id) {
-        AlertDialog alert = createDeleteAlertDialog((Round) parent.getItemAtPosition(position));
+        AlertDialog alert = createDeleteAlertDialog((Round) parent
+            .getItemAtPosition(position));
         vibrator.vibrate(100);
         alert.show();
         return false;
