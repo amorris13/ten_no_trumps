@@ -152,6 +152,7 @@ public class RoundList extends SherlockListActivity implements OnStateChangedLis
       case android.R.id.home:
         // app icon in action bar clicked; go up one level
         Intent goBackIntent = new Intent(this, MatchList.class);
+        goBackIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(goBackIntent);
         return true;
       default:

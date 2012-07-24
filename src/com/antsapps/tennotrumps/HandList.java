@@ -186,6 +186,7 @@ public class HandList extends SherlockListActivity implements
       case android.R.id.home:
         // app icon in action bar clicked; go up one level
         Intent intent = new Intent(this, RoundList.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(Match.ID_TAG, mRound.getMatch().getId());
         startActivity(intent);
         return true;
