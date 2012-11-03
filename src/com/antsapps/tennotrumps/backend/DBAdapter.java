@@ -19,8 +19,11 @@ import com.google.common.collect.Maps;
 public class DBAdapter extends SQLiteOpenHelper {
   /** The name of the database file on the file system */
   public static final String DATABASE_NAME = "TenNoTrumps.db";
-  /** The version of the database that this class understands. */
-  private static final int DATABASE_VERSION = 1;
+  /**
+   * The version of the database that this class understands. Version history:
+   * 1: Initial version 2: Adds columns for points for each hand.
+   */
+  private static final int DATABASE_VERSION = 2;
 
   public static final String TABLE_MATCHES = "matches";
   public static final String TABLE_ROUNDS = "rounds";
@@ -44,6 +47,8 @@ public class DBAdapter extends SQLiteOpenHelper {
   public static final String COLUMN_BID = "bid";
   public static final String COLUMN_TRICKS_WON = "tricks_won";
   public static final String COLUMN_DATE = "date";
+  public static final String COLUMN_POINTS_WINNING_TEAM = "points_winning_team";
+  public static final String COLUMN_POINTS_LOSING_TEAM = "points_losing_team";
 
   private static final String CREATE_HANDS = "CREATE TABLE " + TABLE_HANDS
       + "(" + COLUMN_HAND_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " //
@@ -52,6 +57,8 @@ public class DBAdapter extends SQLiteOpenHelper {
       + COLUMN_BIDDING_PLAYER_ID + " INTEGER, " //
       + COLUMN_BID + " TEXT, " //
       + COLUMN_TRICKS_WON + " INTEGER, " //
+      + COLUMN_POINTS_WINNING_TEAM + " INTEGER, " //
+      + COLUMN_POINTS_LOSING_TEAM + " INTEGER, " //
       + COLUMN_DATE + " INTEGER)";
   private static final String CREATE_ROUNDS = "CREATE TABLE " + TABLE_ROUNDS
       + "(" + COLUMN_ROUND_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -68,16 +75,6 @@ public class DBAdapter extends SQLiteOpenHelper {
   private static final String CREATE_PLAYERS = "CREATE TABLE " + TABLE_PLAYERS
       + "(" + COLUMN_PLAYER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
       + COLUMN_PLAYER_NAME + " TEXT)";
-  private static final String DROP_HANDS = "DROP TABLE IF EXISTS "
-      + TABLE_HANDS;
-  private static final String DROP_ROUNDS = "DROP TABLE IF EXISTS "
-      + TABLE_ROUNDS;
-  private static final String DROP_MATCHES = "DROP TABLE IF EXISTS "
-      + TABLE_MATCHES;
-  private static final String DROP_TEAMS = "DROP TABLE IF EXISTS "
-      + TABLE_TEAMS;
-  private static final String DROP_PLAYERS = "DROP TABLE IF EXISTS "
-      + TABLE_PLAYERS;
 
   private final Context mContext;
 
@@ -96,9 +93,11 @@ public class DBAdapter extends SQLiteOpenHelper {
    *          An array of SQL statements to execute
    */
   private void execMultipleSQL(SQLiteDatabase db, String[] sql) {
-    for (String s : sql)
-      if (s.trim().length() > 0)
+    for (String s : sql) {
+      if (s.trim().length() > 0) {
         db.execSQL(s);
+      }
+    }
   }
 
   /** Called when it is time to create the database */
@@ -123,24 +122,26 @@ public class DBAdapter extends SQLiteOpenHelper {
   @Override
   public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     Log.w(DATABASE_NAME, "Upgrading database from version " + oldVersion
-        + " to " + newVersion + ", which will destroy all old data");
+        + " to " + newVersion);
+    if (oldVersion == 1 && newVersion == 2) {
+      db.beginTransaction();
+      try {
+        // Create tables & test data
+        execMultipleSQL(db, new String[] {
+            "ALTER TABLE " + TABLE_HANDS + " ADD COLUMN "
+                + COLUMN_POINTS_WINNING_TEAM,
+            "ALTER TABLE " + TABLE_HANDS + " ADD COLUMN "
+                + COLUMN_POINTS_LOSING_TEAM });
+        db.setTransactionSuccessful();
+      } catch (SQLException e) {
+        Log.e("Error creating tables and debug data", e.toString());
+      } finally {
+        db.endTransaction();
+      }
 
-    String[] sql = new String[] { DROP_HANDS, DROP_ROUNDS, DROP_MATCHES,
-        DROP_TEAMS, DROP_PLAYERS };
-    db.beginTransaction();
-    try {
-      // Create tables & test data
-      execMultipleSQL(db, sql);
-      db.setTransactionSuccessful();
-    } catch (SQLException e) {
-      Log.e("Error creating tables and debug data", e.toString());
-    } finally {
-      db.endTransaction();
+      // Fill in details of previous games.
+
     }
-
-    // This is cheating. In the real world, you'll need to add columns, not
-    // rebuild from scratch
-    onCreate(db);
   }
 
   public void initialize(List<Match> matches, Map<Long, Player> players,
@@ -225,16 +226,18 @@ public class DBAdapter extends SQLiteOpenHelper {
     roundsCursor.close();
 
     // Do Hands
-    Cursor handsCursor = getWritableDatabase().query(
-        TABLE_HANDS,
-        new String[] { COLUMN_HAND_ID, COLUMN_ROUND_ID, COLUMN_BIDDING_TEAM_ID,
-            COLUMN_BIDDING_PLAYER_ID, COLUMN_BID, COLUMN_TRICKS_WON,
-            COLUMN_DATE },
-        null,
-        null,
-        null,
-        null,
-        null);
+    Cursor handsCursor = getWritableDatabase()
+        .query(
+            TABLE_HANDS,
+            new String[] { COLUMN_HAND_ID, COLUMN_ROUND_ID,
+                COLUMN_BIDDING_TEAM_ID, COLUMN_BIDDING_PLAYER_ID, COLUMN_BID,
+                COLUMN_TRICKS_WON, COLUMN_POINTS_WINNING_TEAM,
+                COLUMN_POINTS_LOSING_TEAM, COLUMN_DATE },
+            null,
+            null,
+            null,
+            null,
+            null);
     handsCursor.moveToFirst();
     while (!handsCursor.isAfterLast()) {
       Hand hand = cursorToHand(handsCursor, rounds, teams, players);
@@ -288,9 +291,11 @@ public class DBAdapter extends SQLiteOpenHelper {
     Bid bid = handsCursor.getString(4).length() == 0 ? null : Bid
         .valueOf(handsCursor.getString(4));
     int tricksWon = handsCursor.getInt(5);
+    int pointsWinningTeam;
+    int pointsLosingTeam;
     Date date = new Date(handsCursor.getLong(6));
     Hand hand = new Hand(id, round, biddingTeam, biddingPlayer, bid, tricksWon,
-        date);
+        date, tricksWon, tricksWon);
     round.addHand(hand);
     return hand;
   }
