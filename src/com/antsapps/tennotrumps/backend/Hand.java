@@ -37,9 +37,9 @@ public class Hand extends OnStateChangedReporter implements Comparable<Hand> {
       Player biddingPlayer,
       Bid bid,
       int tricksWon,
-      Date date,
       int pointsWinningTeam,
-      int pointsLosingTeam) {
+      int pointsLosingTeam,
+      Date date) {
     super();
     this.id = id;
     mRound = round;
@@ -47,9 +47,9 @@ public class Hand extends OnStateChangedReporter implements Comparable<Hand> {
     mBiddingPlayer = biddingPlayer;
     mBid = bid;
     mTricksWonByBiddingTeam = tricksWon;
-    mDate = date;
     mPointsWinningTeam = pointsWinningTeam;
     mPointsLosingTeam = pointsLosingTeam;
+    mDate = date;
 
     bidAchieved = isBidAchieved();
   }

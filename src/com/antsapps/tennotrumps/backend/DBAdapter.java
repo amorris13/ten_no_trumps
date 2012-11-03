@@ -240,7 +240,7 @@ public class DBAdapter extends SQLiteOpenHelper {
             null);
     handsCursor.moveToFirst();
     while (!handsCursor.isAfterLast()) {
-      Hand hand = cursorToHand(handsCursor, rounds, teams, players);
+      cursorToHand(handsCursor, rounds, teams, players);
       handsCursor.moveToNext();
     }
     handsCursor.close();
@@ -291,11 +291,11 @@ public class DBAdapter extends SQLiteOpenHelper {
     Bid bid = handsCursor.getString(4).length() == 0 ? null : Bid
         .valueOf(handsCursor.getString(4));
     int tricksWon = handsCursor.getInt(5);
-    int pointsWinningTeam;
-    int pointsLosingTeam;
-    Date date = new Date(handsCursor.getLong(6));
+    int pointsWinningTeam = handsCursor.getInt(6);
+    int pointsLosingTeam = handsCursor.getInt(7);
+    Date date = new Date(handsCursor.getLong(8));
     Hand hand = new Hand(id, round, biddingTeam, biddingPlayer, bid, tricksWon,
-        date, tricksWon, tricksWon);
+        pointsWinningTeam, pointsLosingTeam, date);
     round.addHand(hand);
     return hand;
   }
