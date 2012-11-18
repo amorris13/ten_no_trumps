@@ -24,6 +24,8 @@ public class Application extends OnStateChangedReporter implements
   private final Map<Long, Player> mPlayers;
   private final Map<Long, Team> mTeams;
 
+  private ScoringSystem mScoringSystem = new StandardScoringSystem();
+
   public final DBAdapter database;
 
   private Application(Context context) {
@@ -50,6 +52,14 @@ public class Application extends OnStateChangedReporter implements
     }
     onStateChanged();
     notifyStateChanged();
+  }
+
+  public ScoringSystem getScoringSystem() {
+    return mScoringSystem;
+  }
+
+  public void setScoringSystem(ScoringSystem mScoringSystem) {
+    this.mScoringSystem = mScoringSystem;
   }
 
   public void addPlayer(Player player) {
