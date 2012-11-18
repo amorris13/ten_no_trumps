@@ -39,11 +39,7 @@ public enum Bid {
 
   public static final String ID_TAG = "bid_id";
 
-  private static final int POINTS_PER_TRICK_WON_BY_LOSING_TEAM = 10;
-
   public static final int TRICKS_PER_HAND = 10;
-
-  private static final int BONUS = 250;
 
   private static Table<Tricks, Suit, Bid> table = ArrayTable.create(
       Tricks.list, Suit.list);
@@ -62,10 +58,6 @@ public enum Bid {
     mSuit = suit;
   }
 
-  public int getPoints() {
-    return mTricks.mPoints + mSuit.mPoints;
-  }
-
   public String getSymbol() {
     return mTricks.mSymbol + mSuit.mSymbol;
   }
@@ -82,27 +74,6 @@ public enum Bid {
     }
   }
 
-  public int getScore(boolean biddingTeam, int tricksWon) {
-    if (biddingTeam) {
-      if (isWinningNumberOfTricks(tricksWon)) {
-        if (tricksWon == TRICKS_PER_HAND) {
-          return Math.max(BONUS, getPoints());
-        }
-        return getPoints();
-      } else {
-        return -getPoints();
-      }
-    } else {
-      if (mTricks == Tricks.ZERO) {
-        // No points for losing team when misere is bid.
-        return 0;
-      } else {
-        return POINTS_PER_TRICK_WON_BY_LOSING_TEAM
-            * (TRICKS_PER_HAND - tricksWon);
-      }
-    }
-  }
-
   public static Bid getBid(Tricks tricks, Suit suit) {
     return table.get(tricks, suit);
   }
@@ -113,25 +84,23 @@ public enum Bid {
   }
 
   public enum Suit {
-    SPADES(40, "Spades", "\u2660", Color.BLACK),
-    CLUBS(60, "Clubs", "\u2663", Color.BLACK),
-    DIAMONDS(80, "Diamonds", "\u2666", Color.RED),
-    HEARTS(100, "Hearts", "\u2665", Color.RED),
-    NOTRUMPS(120, "No Trumps", "NT", Color.BLACK),
-    CLOSEDMISERE(250, "Closed Misere", "CM", Color.BLACK),
-    OPENMISERE(500, "Open Misere", "OM", Color.BLACK);
+    SPADES("Spades", "\u2660", Color.BLACK),
+    CLUBS("Clubs", "\u2663", Color.BLACK),
+    DIAMONDS("Diamonds", "\u2666", Color.RED),
+    HEARTS("Hearts", "\u2665", Color.RED),
+    NOTRUMPS("No Trumps", "NT", Color.BLACK),
+    CLOSEDMISERE("Closed Misere", "CM", Color.BLACK),
+    OPENMISERE("Open Misere", "OM", Color.BLACK);
 
     public static final int NUM_REAL_SUITS = 5;
     public static final List<Suit> list = Lists.newArrayList(SPADES, CLUBS,
         DIAMONDS, HEARTS, NOTRUMPS, CLOSEDMISERE, OPENMISERE);
 
-    public final int mPoints;
     public final String mName;
     public final String mSymbol;
     public final int mColor;
 
-    Suit(int points, String name, String symbol, int color) {
-      mPoints = points;
+    Suit(String name, String symbol, int color) {
       mName = name;
       mSymbol = symbol;
       mColor = color;
@@ -143,24 +112,22 @@ public enum Bid {
   }
 
   public enum Tricks {
-    ZERO(0, 0, ""),
-    SIX(6, 0, "Six"),
-    SEVEN(7, 100, "Seven"),
-    EIGHT(8, 200, "Eight"),
-    NINE(9, 300, "Nine"),
-    TEN(10, 400, "Ten");
+    ZERO(0, ""),
+    SIX(6, "Six"),
+    SEVEN(7, "Seven"),
+    EIGHT(8, "Eight"),
+    NINE(9, "Nine"),
+    TEN(10, "Ten");
 
     public static final List<Tricks> list = Lists.newArrayList(SIX, SEVEN,
         EIGHT, NINE, TEN, ZERO);
 
-    public final int mPoints;
     public final int mNumber;
     public final String mName;
     public final String mSymbol;
 
-    Tricks(int number, int points, String name) {
+    Tricks(int number, String name) {
       mNumber = number;
-      mPoints = points;
       mName = name;
       mSymbol = number == 0 ? "" : ((Integer) number).toString();
     }
@@ -169,5 +136,4 @@ public enum Bid {
       return mName;
     }
   }
-
 }

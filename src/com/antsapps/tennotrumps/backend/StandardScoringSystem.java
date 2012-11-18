@@ -37,13 +37,24 @@ class StandardScoringSystem implements ScoringSystem {
   @Override
   public int calcBiddersScore(Bid bid, int tricksWonByBiddingTeam) {
     int bidValue = mSuitPoints.get(bid.mSuit) + mTricksPoints.get(bid.mTricks);
-    return bid.isWinningNumberOfTricks(tricksWonByBiddingTeam) ? bidValue
-        : -bidValue;
+    if (bid.isWinningNumberOfTricks(tricksWonByBiddingTeam)) {
+      if (tricksWonByBiddingTeam == Bid.TRICKS_PER_HAND) {
+        return Math.max(BONUS, bidValue);
+      }
+      return bidValue;
+    } else {
+      return -bidValue;
+    }
   }
 
   @Override
   public int calcNonBiddersScore(Bid bid, int tricksWonByBiddingTeam) {
-    return (Bid.TRICKS_PER_HAND - tricksWonByBiddingTeam)
-        * POINTS_PER_TRICK_WON_BY_LOSING_TEAM;
+    if (bid.mTricks == Tricks.ZERO) {
+      // No points for non bidding team in misere bids.
+      return 0;
+    } else {
+      return (Bid.TRICKS_PER_HAND - tricksWonByBiddingTeam)
+          * POINTS_PER_TRICK_WON_BY_LOSING_TEAM;
+    }
   }
 }

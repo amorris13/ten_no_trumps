@@ -1,6 +1,6 @@
 package com.antsapps.tennotrumps.backend;
 
-interface ScoringSystem {
+public interface ScoringSystem {
 
   int calcBiddersScore(Bid bid, int tricksWonByBiddingTeam);
 

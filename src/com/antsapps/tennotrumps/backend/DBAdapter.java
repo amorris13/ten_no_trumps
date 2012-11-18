@@ -47,8 +47,8 @@ public class DBAdapter extends SQLiteOpenHelper {
   public static final String COLUMN_BID = "bid";
   public static final String COLUMN_TRICKS_WON = "tricks_won";
   public static final String COLUMN_DATE = "date";
-  public static final String COLUMN_POINTS_WINNING_TEAM = "points_winning_team";
-  public static final String COLUMN_POINTS_LOSING_TEAM = "points_losing_team";
+  public static final String COLUMN_POINTS_BIDDING_TEAM = "points_bidding_team";
+  public static final String COLUMN_POINTS_NON_BIDDING_TEAM = "points_non_bidding_team";
 
   private static final String CREATE_HANDS = "CREATE TABLE " + TABLE_HANDS
       + "(" + COLUMN_HAND_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " //
@@ -57,8 +57,8 @@ public class DBAdapter extends SQLiteOpenHelper {
       + COLUMN_BIDDING_PLAYER_ID + " INTEGER, " //
       + COLUMN_BID + " TEXT, " //
       + COLUMN_TRICKS_WON + " INTEGER, " //
-      + COLUMN_POINTS_WINNING_TEAM + " INTEGER, " //
-      + COLUMN_POINTS_LOSING_TEAM + " INTEGER, " //
+      + COLUMN_POINTS_BIDDING_TEAM + " INTEGER, " //
+      + COLUMN_POINTS_NON_BIDDING_TEAM + " INTEGER, " //
       + COLUMN_DATE + " INTEGER)";
   private static final String CREATE_ROUNDS = "CREATE TABLE " + TABLE_ROUNDS
       + "(" + COLUMN_ROUND_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -126,12 +126,52 @@ public class DBAdapter extends SQLiteOpenHelper {
     if (oldVersion == 1 && newVersion == 2) {
       db.beginTransaction();
       try {
-        // Create tables & test data
+        // Add new columns.
         execMultipleSQL(db, new String[] {
             "ALTER TABLE " + TABLE_HANDS + " ADD COLUMN "
-                + COLUMN_POINTS_WINNING_TEAM,
+                + COLUMN_POINTS_BIDDING_TEAM,
             "ALTER TABLE " + TABLE_HANDS + " ADD COLUMN "
-                + COLUMN_POINTS_LOSING_TEAM });
+                + COLUMN_POINTS_NON_BIDDING_TEAM });
+
+        // Fill in information for columns
+        Cursor handsCursor = getWritableDatabase()
+            .query(
+                TABLE_HANDS,
+                new String[] { COLUMN_HAND_ID, COLUMN_BID, COLUMN_TRICKS_WON },
+                null,
+                null,
+                null,
+                null,
+                null);
+        handsCursor.moveToFirst();
+        while (!handsCursor.isAfterLast()) {
+          ContentValues values = new ContentValues();
+          values.put(
+              COLUMN_POINTS_BIDDING_TEAM,
+              Application
+                  .getInstance(mContext)
+                  .getScoringSystem()
+                  .calcBiddersScore(
+                      Bid.valueOf(handsCursor.getString(1)),
+                      handsCursor.getInt(2)));
+          values.put(
+              COLUMN_POINTS_NON_BIDDING_TEAM,
+              Application
+                  .getInstance(mContext)
+                  .getScoringSystem()
+                  .calcNonBiddersScore(
+                      Bid.valueOf(handsCursor.getString(1)),
+                      handsCursor.getInt(2)));
+          getWritableDatabase().update(
+              TABLE_HANDS,
+              values,
+              COLUMN_HAND_ID + " = " + handsCursor.getLong(0),
+              null);
+          handsCursor.moveToNext();
+        }
+        handsCursor.close();
+
+
         db.setTransactionSuccessful();
       } catch (SQLException e) {
         Log.e("Error creating tables and debug data", e.toString());
@@ -231,8 +271,8 @@ public class DBAdapter extends SQLiteOpenHelper {
             TABLE_HANDS,
             new String[] { COLUMN_HAND_ID, COLUMN_ROUND_ID,
                 COLUMN_BIDDING_TEAM_ID, COLUMN_BIDDING_PLAYER_ID, COLUMN_BID,
-                COLUMN_TRICKS_WON, COLUMN_POINTS_WINNING_TEAM,
-                COLUMN_POINTS_LOSING_TEAM, COLUMN_DATE },
+                COLUMN_TRICKS_WON, COLUMN_POINTS_BIDDING_TEAM,
+                COLUMN_POINTS_NON_BIDDING_TEAM, COLUMN_DATE },
             null,
             null,
             null,
@@ -291,31 +331,34 @@ public class DBAdapter extends SQLiteOpenHelper {
     Bid bid = handsCursor.getString(4).length() == 0 ? null : Bid
         .valueOf(handsCursor.getString(4));
     int tricksWon = handsCursor.getInt(5);
-    int pointsWinningTeam = handsCursor.getInt(6);
-    int pointsLosingTeam = handsCursor.getInt(7);
+    int pointsBiddingTeam = handsCursor.getInt(6);
+    int pointsNonBiddingTeam = handsCursor.getInt(7);
     Date date = new Date(handsCursor.getLong(8));
     Hand hand = new Hand(id, round, biddingTeam, biddingPlayer, bid, tricksWon,
-        pointsWinningTeam, pointsLosingTeam, date);
+        pointsBiddingTeam, pointsNonBiddingTeam, date);
     round.addHand(hand);
     return hand;
   }
 
-  public void addHand(Hand hand) {
-    long id = getWritableDatabase().insert(
-        TABLE_HANDS,
-        null,
-        createHandValues(hand));
-    hand.setId(id);
-    requestBackup();
-  }
-
-  public void updateHand(Hand hand) {
-    getWritableDatabase().update(
-        TABLE_HANDS,
-        createHandValues(hand),
-        COLUMN_HAND_ID + " = " + hand.getId(),
-        null);
-    requestBackup();
+  public Hand addHand(Round round, Bid bid, Team biddingTeam,
+      Player biddingPlayer, int tricksWonByBiddingTeam, int pointsBiddingTeam,
+      int pointsNonBiddingTeam) {
+    ContentValues values = new ContentValues();
+    values.put(COLUMN_ROUND_ID, round.getId());
+    values.put(
+        COLUMN_BIDDING_TEAM_ID,
+        biddingTeam != null ? biddingTeam.getId() : -1);
+    values.put(
+        COLUMN_BIDDING_PLAYER_ID,
+        biddingPlayer != null ? biddingPlayer.getId() : -1);
+    values.put(COLUMN_BID, bid != null ? bid.toString() : "");
+    values.put(COLUMN_TRICKS_WON, tricksWonByBiddingTeam);
+    long time = System.currentTimeMillis();
+    values.put(COLUMN_DATE, time);
+    long id = getWritableDatabase().insert(TABLE_HANDS, null, values);
+    return new Hand(id, round, biddingTeam, biddingPlayer, bid,
+        tricksWonByBiddingTeam, pointsBiddingTeam, pointsNonBiddingTeam,
+        new Date(time));
   }
 
   public void removeHand(Hand hand) {
@@ -324,20 +367,6 @@ public class DBAdapter extends SQLiteOpenHelper {
         COLUMN_HAND_ID + " = " + hand.getId(),
         null);
     requestBackup();
-  }
-
-  private ContentValues createHandValues(Hand hand) {
-    ContentValues values = new ContentValues();
-    values.put(COLUMN_ROUND_ID, hand.getRound().getId());
-    values.put(COLUMN_BIDDING_TEAM_ID, hand.getBiddingTeam() != null ? hand
-        .getBiddingTeam().getId() : -1);
-    values.put(COLUMN_BIDDING_PLAYER_ID, hand.getBiddingPlayer() != null ? hand
-        .getBiddingPlayer().getId() : -1);
-    values.put(COLUMN_BID, hand.getBid() != null ? hand.getBid().toString()
-        : "");
-    values.put(COLUMN_TRICKS_WON, hand.getTricksWonByBiddingTeam());
-    values.put(COLUMN_DATE, hand.getDate().getTime());
-    return values;
   }
 
   public void addRound(Round round) {

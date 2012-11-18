@@ -128,14 +128,12 @@ public class AddHand extends SherlockActivity {
       return;
     }
 
-    Hand hand = new Hand(mRound);
-
-    hand.setBiddingTeam(mTeamSelector.getSelectedTeam());
-    hand.setBiddingPlayer(mPlayerSelector.getSelectedPlayer());
-    hand.setBid(mBidSelector.getSelectedBid());
-    hand.setTricksWonByBiddingTeam(mResultSelector.getTricksWon());
-
-    application.addHand(hand);
+    Hand hand = application.addHand(
+        mRound,
+        mBidSelector.getSelectedBid(),
+        mTeamSelector.getSelectedTeam(),
+        mPlayerSelector.getSelectedPlayer(),
+        mResultSelector.getTricksWon());
 
     Log.i(TAG, hand.toString());
 

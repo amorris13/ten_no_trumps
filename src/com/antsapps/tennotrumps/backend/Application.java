@@ -162,12 +162,18 @@ public class Application extends OnStateChangedReporter implements
     round.getMatch().removeRound(round);
   }
 
-  public void addHand(Hand hand) {
-    Preconditions.checkArgument(
-        hand.getRound() != null,
-        "Round for hand must be specified.");
-    database.addHand(hand);
-    hand.getRound().addHand(hand);
+  public Hand addHand(Round round, Bid bid, Team biddingTeam,
+      Player biddingPlayer, int tricksWonByBiddingTeam) {
+    Hand hand = database.addHand(
+        round,
+        bid,
+        biddingTeam,
+        biddingPlayer,
+        tricksWonByBiddingTeam,
+        mScoringSystem.calcBiddersScore(bid, tricksWonByBiddingTeam),
+        mScoringSystem.calcNonBiddersScore(bid, tricksWonByBiddingTeam));
+    round.addHand(hand);
+    return hand;
   }
 
   public void deleteHand(Hand hand) {

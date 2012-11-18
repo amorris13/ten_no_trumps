@@ -7,7 +7,7 @@ import com.google.common.base.Objects;
 public class Hand extends OnStateChangedReporter implements Comparable<Hand> {
   public static final String ID_TAG = "hand_id";
 
-  private static final String TAG = "Hand";
+  static final String TAG = "Hand";
 
   private long id;
 
@@ -17,18 +17,11 @@ public class Hand extends OnStateChangedReporter implements Comparable<Hand> {
   private Bid mBid;
   private int mTricksWonByBiddingTeam = -1;
   private final Date mDate;
-  private int mPointsWinningTeam;
-  private int mPointsLosingTeam;
+  private final int mPointsBiddingTeam;
+  private final int mPointsNonBiddingTeam;
 
   // cached.
-  private boolean bidAchieved;
-
-  public Hand(Round round) {
-    super();
-    mRound = round;
-    mDate = new Date();
-    updateDate();
-  }
+  private final boolean bidAchieved;
 
   // For initialising from database only!
   Hand(long id,
@@ -37,8 +30,8 @@ public class Hand extends OnStateChangedReporter implements Comparable<Hand> {
       Player biddingPlayer,
       Bid bid,
       int tricksWon,
-      int pointsWinningTeam,
-      int pointsLosingTeam,
+      int pointsBiddingTeam,
+      int pointsNonBiddingTeam,
       Date date) {
     super();
     this.id = id;
@@ -47,8 +40,8 @@ public class Hand extends OnStateChangedReporter implements Comparable<Hand> {
     mBiddingPlayer = biddingPlayer;
     mBid = bid;
     mTricksWonByBiddingTeam = tricksWon;
-    mPointsWinningTeam = pointsWinningTeam;
-    mPointsLosingTeam = pointsLosingTeam;
+    mPointsBiddingTeam = pointsBiddingTeam;
+    mPointsNonBiddingTeam = pointsNonBiddingTeam;
     mDate = date;
 
     bidAchieved = isBidAchieved();
@@ -120,7 +113,7 @@ public class Hand extends OnStateChangedReporter implements Comparable<Hand> {
       throw new IllegalArgumentException(
           "biddingTeam is not participating in this round");
     }
-    return mBid.getScore(team == mBiddingTeam, mTricksWonByBiddingTeam);
+    return team == mBiddingTeam ? mPointsBiddingTeam : mPointsNonBiddingTeam;
   }
 
   public synchronized long getId() {
@@ -137,11 +130,6 @@ public class Hand extends OnStateChangedReporter implements Comparable<Hand> {
 
   public synchronized void setDate(long date) {
     mDate.setTime(date);
-  }
-
-  private void updateDate() {
-    mDate.setTime(System.currentTimeMillis());
-    mRound.updateDate(getDate());
   }
 
   @Override

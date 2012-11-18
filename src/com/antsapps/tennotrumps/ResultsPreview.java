@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.antsapps.tennotrumps.backend.Application;
 import com.antsapps.tennotrumps.backend.Bid;
 import com.antsapps.tennotrumps.backend.Round;
 import com.antsapps.tennotrumps.backend.Team;
@@ -16,7 +17,7 @@ import com.google.common.collect.HashBiMap;
 
 public class ResultsPreview extends LinearLayout {
 
-  private static final String TAG = "ResultsPreview";
+  static final String TAG = "ResultsPreview";
 
   private final BiMap<TextView, Team> teamsMap = HashBiMap.create();
 
@@ -44,7 +45,9 @@ public class ResultsPreview extends LinearLayout {
       for (TextView textView : teamsMap.keySet()) {
         Team teamForTextView = teamsMap.get(textView);
         if (biddingTeam == teamForTextView) {
-          int points = bid.getScore(true, tricksWon);
+          int points = Application
+              .getInstance(getContext()).getScoringSystem()
+              .calcBiddersScore(bid, tricksWon);
           textView.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
           if (points > 0) {
             textView.setText("+" + points);
@@ -54,7 +57,9 @@ public class ResultsPreview extends LinearLayout {
             textView.setTextColor(getResources().getColor(R.color.lose));
           }
         } else {
-          int points = bid.getScore(false, tricksWon);
+          int points = Application
+              .getInstance(getContext()).getScoringSystem()
+              .calcNonBiddersScore(bid, tricksWon);
           textView.setTypeface(Typeface.DEFAULT, Typeface.NORMAL);
           if (points > 0) {
             textView.setText("+" + points);
