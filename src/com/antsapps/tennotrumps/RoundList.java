@@ -142,6 +142,11 @@ public class RoundList extends SherlockListActivity implements OnStateChangedLis
         goBackIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(goBackIntent);
         return true;
+      case R.id.settings:
+        Intent settingsIntent = new Intent(getBaseContext(),
+            SettingsActivity.class);
+        startActivity(settingsIntent);
+        return true;
       default:
         return super.onOptionsItemSelected(item);
     }

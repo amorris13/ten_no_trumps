@@ -106,6 +106,11 @@ public class MatchList extends SherlockListActivity implements OnStateChangedLis
         Intent intent = new Intent(getBaseContext(), AddMatch.class);
         startActivity(intent);
         return true;
+      case R.id.settings:
+        Intent settingsIntent = new Intent(getBaseContext(),
+            SettingsActivity.class);
+        startActivity(settingsIntent);
+        return true;
       default:
         return super.onOptionsItemSelected(item);
     }

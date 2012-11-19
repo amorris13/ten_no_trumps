@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+  <PreferenceCategory android:title="Scoring Options" >
+    <ListPreference
+      android:dialogTitle="Award points for non-bidding team"
+      android:entries="@array/entries_nonbiddingpoints_pref"
+      android:entryValues="@array/entryvalues_nonbiddingpoints_pref"
+      android:key="@string/pref_points_nonbidders"
+      android:title="Award points for non-bidding team" 
+      android:defaultValue="always"/>
+
+    <CheckBoxPreference
+      android:defaultValue="true"
+      android:key="@string/pref_bonus"
+      android:summaryOff="Bidding team gets the value of their bid if they take all 10 tricks"
+      android:summaryOn="Bidding team gets at least 250 points if they take all 10 tricks"
+      android:title="Ten trick bonus" />
+  </PreferenceCategory>
+
+</PreferenceScreen>

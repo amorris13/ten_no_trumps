@@ -26,5 +26,8 @@
 	<string name="rounds">Rounds</string>
 	<string name="hands">Hands</string>
 	<string name="new_hand_title">New Hand</string>
-
+	<string name="pref_bonus">bonus</string>
+	<string name="pref_points_nonbidders">points_nonbidders</string>
+  <string name="settings">Settings</string>
+  
 </resources>

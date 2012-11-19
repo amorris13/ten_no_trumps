@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <!-- Used in app/menu examples -->
+  <string-array name="entries_nonbiddingpoints_pref">
+    <item>Always</item>
+    <item>Only if bidding team loses</item>
+    <item>Never</item>
+  </string-array>
+
+  <!-- Used in app/menu examples -->
+  <string-array name="entryvalues_nonbiddingpoints_pref">
+    <item>always</item>
+    <item>sometimes</item>
+    <item>never</item>
+  </string-array>
+
+</resources>
