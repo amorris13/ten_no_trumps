@@ -134,7 +134,7 @@ public class DBAdapter extends SQLiteOpenHelper {
                 + COLUMN_POINTS_NON_BIDDING_TEAM });
 
         // Fill in information for columns
-        Cursor handsCursor = getWritableDatabase()
+        Cursor handsCursor = db
             .query(
                 TABLE_HANDS,
                 new String[] { COLUMN_HAND_ID, COLUMN_BID, COLUMN_TRICKS_WON },
@@ -144,25 +144,20 @@ public class DBAdapter extends SQLiteOpenHelper {
                 null,
                 null);
         handsCursor.moveToFirst();
+        StandardScoringSystem standardScoringSystem = new StandardScoringSystem();
         while (!handsCursor.isAfterLast()) {
           ContentValues values = new ContentValues();
           values.put(
               COLUMN_POINTS_BIDDING_TEAM,
-              Application
-                  .getInstance(mContext)
-                  .getScoringSystem()
-                  .calcBiddersScore(
-                      Bid.valueOf(handsCursor.getString(1)),
-                      handsCursor.getInt(2)));
+              standardScoringSystem.calcBiddersScore(
+                  Bid.valueOf(handsCursor.getString(1)),
+                  handsCursor.getInt(2)));
           values.put(
               COLUMN_POINTS_NON_BIDDING_TEAM,
-              Application
-                  .getInstance(mContext)
-                  .getScoringSystem()
-                  .calcNonBiddersScore(
-                      Bid.valueOf(handsCursor.getString(1)),
-                      handsCursor.getInt(2)));
-          getWritableDatabase().update(
+              standardScoringSystem.calcNonBiddersScore(
+                  Bid.valueOf(handsCursor.getString(1)),
+                  handsCursor.getInt(2)));
+          db.update(
               TABLE_HANDS,
               values,
               COLUMN_HAND_ID + " = " + handsCursor.getLong(0),
@@ -192,8 +187,9 @@ public class DBAdapter extends SQLiteOpenHelper {
     players.clear();
     teams.clear();
 
+    SQLiteDatabase db = getWritableDatabase();
     // Do players first.
-    Cursor playersCursor = getWritableDatabase().query(
+    Cursor playersCursor = db.query(
         TABLE_PLAYERS,
         new String[] { COLUMN_PLAYER_ID, COLUMN_PLAYER_NAME },
         null,
@@ -210,7 +206,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     playersCursor.close();
 
     // Then do teams.
-    Cursor teamsCursor = getWritableDatabase().query(
+    Cursor teamsCursor = db.query(
         TABLE_TEAMS,
         new String[] { COLUMN_TEAM_ID, COLUMN_TEAM_NAME, COLUMN_PLAYER_1,
             COLUMN_PLAYER_2 },
@@ -229,7 +225,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // Do matches.
     Map<Long, Match> matchesMap = Maps.newHashMap();
-    Cursor matchesCursor = getWritableDatabase().query(
+    Cursor matchesCursor = db.query(
         TABLE_MATCHES,
         new String[] { COLUMN_MATCH_ID, COLUMN_TEAM_1, COLUMN_TEAM_2,
             COLUMN_DATE },
@@ -249,7 +245,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // Do rounds
     Map<Long, Round> rounds = Maps.newHashMap();
-    Cursor roundsCursor = getWritableDatabase().query(
+    Cursor roundsCursor = db.query(
         TABLE_ROUNDS,
         new String[] { COLUMN_ROUND_ID, COLUMN_MATCH_ID, COLUMN_DATE },
         null,
@@ -266,7 +262,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     roundsCursor.close();
 
     // Do Hands
-    Cursor handsCursor = getWritableDatabase()
+    Cursor handsCursor = db
         .query(
             TABLE_HANDS,
             new String[] { COLUMN_HAND_ID, COLUMN_ROUND_ID,
