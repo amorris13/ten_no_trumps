@@ -2,6 +2,7 @@
 
 Added scoring settings.
 60% reduction in application size. Now under 500kb.
+Minor bug fixes.
 
 1.2
 
