@@ -17,10 +17,10 @@ import android.util.Log;
 import com.google.common.collect.Maps;
 
 public class DBAdapter extends SQLiteOpenHelper {
-  /** The name of the database file on the file system */
+  /** The name of the mDatabase file on the file system */
   public static final String DATABASE_NAME = "TenNoTrumps.db";
   /**
-   * The version of the database that this class understands. Version history:
+   * The version of the mDatabase that this class understands. Version history:
    * 1: Initial version 2: Adds columns for points for each hand.
    */
   private static final int DATABASE_VERSION = 2;
@@ -88,7 +88,7 @@ public class DBAdapter extends SQLiteOpenHelper {
    * Execute all of the SQL statements in the String[] array
    *
    * @param db
-   *          The database on which to execute the statements
+   *          The mDatabase on which to execute the statements
    * @param sql
    *          An array of SQL statements to execute
    */
@@ -100,7 +100,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
   }
 
-  /** Called when it is time to create the database */
+  /** Called when it is time to create the mDatabase */
   @Override
   public void onCreate(SQLiteDatabase db) {
     Log.i("DBAdaptor", "onCreate");
@@ -118,10 +118,10 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
   }
 
-  /** Called when the database must be upgraded */
+  /** Called when the mDatabase must be upgraded */
   @Override
   public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-    Log.w(DATABASE_NAME, "Upgrading database from version " + oldVersion
+    Log.w(DATABASE_NAME, "Upgrading mDatabase from version " + oldVersion
         + " to " + newVersion);
     if (oldVersion == 1 && newVersion == 2) {
       db.beginTransaction();
@@ -144,17 +144,17 @@ public class DBAdapter extends SQLiteOpenHelper {
                 null,
                 null);
         handsCursor.moveToFirst();
-        StandardScoringSystem standardScoringSystem = new StandardScoringSystem();
+        ScoringSystem scoringSystem = ScoringSystem.createDefaultScoringSystem();
         while (!handsCursor.isAfterLast()) {
           ContentValues values = new ContentValues();
           values.put(
               COLUMN_POINTS_BIDDING_TEAM,
-              standardScoringSystem.calcBiddersScore(
+              scoringSystem.calcBiddersScore(
                   Bid.valueOf(handsCursor.getString(1)),
                   handsCursor.getInt(2)));
           values.put(
               COLUMN_POINTS_NON_BIDDING_TEAM,
-              standardScoringSystem.calcNonBiddersScore(
+              scoringSystem.calcNonBiddersScore(
                   Bid.valueOf(handsCursor.getString(1)),
                   handsCursor.getInt(2)));
           db.update(

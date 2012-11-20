@@ -1,5 +1,6 @@
 package com.antsapps.tennotrumps;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -8,6 +9,9 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.antsapps.tennotrumps.BidSelector.OnBidSelectedListener;
 import com.antsapps.tennotrumps.ResultSelector.OnTricksWonSelectedListener;
 import com.antsapps.tennotrumps.TeamSelector.OnTeamSelectedListener;
@@ -88,10 +92,38 @@ public class AddHand extends SherlockActivity {
   }
 
   @Override
+  protected void onResume() {
+    super.onResume();
+
+    checkAndNotifyWhetherFinished();
+  }
+
+  @Override
   protected void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
     outState.putLong(Match.ID_TAG, mRound.getMatch().getId());
     outState.putLong(Round.ID_TAG, mRound.getId());
+  }
+
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    MenuInflater inflater = getSupportMenuInflater();
+    inflater.inflate(R.menu.add_hand, menu);
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.settings:
+        Intent settingsIntent = new Intent(getBaseContext(),
+            SettingsActivity.class);
+        startActivity(settingsIntent);
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
+    }
   }
 
   private void enableOKButton(boolean enable) {

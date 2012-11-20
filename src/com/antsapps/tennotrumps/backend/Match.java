@@ -30,7 +30,7 @@ public class Match extends OnStateChangedReporter implements Comparable<Match>,
   }
 
   /**
-   * To construct a hand from the database.
+   * To construct a hand from the mDatabase.
    */
   Match(long id, Team team1, Team team2, Date date) {
     this.id = id;

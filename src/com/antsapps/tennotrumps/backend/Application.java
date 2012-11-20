@@ -6,14 +6,18 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.preference.PreferenceManager;
 
+import com.antsapps.tennotrumps.R;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 public class Application extends OnStateChangedReporter implements
-    OnStateChangedListener {
+    OnStateChangedListener, OnSharedPreferenceChangeListener {
   private static Application instance;
 
   private final Context mContext;
@@ -24,9 +28,9 @@ public class Application extends OnStateChangedReporter implements
   private final Map<Long, Player> mPlayers;
   private final Map<Long, Team> mTeams;
 
-  private ScoringSystem mScoringSystem = new StandardScoringSystem();
+  private final ScoringSystem mScoringSystem;
 
-  public final DBAdapter database;
+  public final DBAdapter mDatabase;
 
   private Application(Context context) {
     super();
@@ -34,8 +38,20 @@ public class Application extends OnStateChangedReporter implements
     mMatches = Lists.newArrayList();
     mPlayers = Maps.newHashMap();
     mTeams = Maps.newHashMap();
-    database = new DBAdapter(context);
-    init();
+
+    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+    mScoringSystem = new ScoringSystem(
+        prefs.getBoolean(context.getString(R.string.pref_bonus), true),
+        prefs.getString(context.getString(R.string.pref_points_nonbidders), "always"));
+    prefs.registerOnSharedPreferenceChangeListener(this);
+
+    mDatabase = new DBAdapter(context);
+    mDatabase.initialize(mMatches, mPlayers, mTeams);
+    for (Match match : mMatches) {
+      match.addOnStateChangedListener(this);
+    }
+    onStateChanged();
+    notifyStateChanged();
   }
 
   public static Application getInstance(Context context) {
@@ -45,28 +61,15 @@ public class Application extends OnStateChangedReporter implements
     return instance;
   }
 
-  private void init() {
-    database.initialize(mMatches, mPlayers, mTeams);
-    for (Match match : mMatches) {
-      match.addOnStateChangedListener(this);
-    }
-    onStateChanged();
-    notifyStateChanged();
-  }
-
   public ScoringSystem getScoringSystem() {
     return mScoringSystem;
-  }
-
-  public void setScoringSystem(ScoringSystem mScoringSystem) {
-    this.mScoringSystem = mScoringSystem;
   }
 
   public void addPlayer(Player player) {
     Preconditions.checkArgument(
         getPlayer(player.getName()) == null,
         "There is already a player with the name " + player.getName());
-    database.addPlayer(player);
+    mDatabase.addPlayer(player);
     mPlayers.put(player.getId(), player);
     notifyStateChanged();
   }
@@ -92,7 +95,7 @@ public class Application extends OnStateChangedReporter implements
     Preconditions.checkArgument(
         getTeam(team.getName()) == null,
         "Team with name " + team.getName() + "already exists");
-    database.addTeam(team);
+    mDatabase.addTeam(team);
     mTeams.put(team.getId(), team);
     notifyStateChanged();
   }
@@ -115,7 +118,7 @@ public class Application extends OnStateChangedReporter implements
   }
 
   public void addMatch(Match match) {
-    database.addMatch(match);
+    mDatabase.addMatch(match);
     match.addOnStateChangedListener(this);
     mMatches.add(match);
     notifyStateChanged();
@@ -128,7 +131,7 @@ public class Application extends OnStateChangedReporter implements
     }
     match.delete();
     mMatches.remove(match);
-    database.removeMatch(match);
+    mDatabase.removeMatch(match);
     notifyStateChanged();
   }
 
@@ -149,7 +152,7 @@ public class Application extends OnStateChangedReporter implements
     Preconditions.checkArgument(
         round.getMatch() != null,
         "Match for round must be specified.");
-    database.addRound(round);
+    mDatabase.addRound(round);
     round.getMatch().addRound(round);
   }
 
@@ -158,13 +161,13 @@ public class Application extends OnStateChangedReporter implements
     for(Hand hand : hands) {
       deleteHand(hand);
     }
-    database.removeRound(round);
+    mDatabase.removeRound(round);
     round.getMatch().removeRound(round);
   }
 
   public Hand addHand(Round round, Bid bid, Team biddingTeam,
       Player biddingPlayer, int tricksWonByBiddingTeam) {
-    Hand hand = database.addHand(
+    Hand hand = mDatabase.addHand(
         round,
         bid,
         biddingTeam,
@@ -177,7 +180,7 @@ public class Application extends OnStateChangedReporter implements
   }
 
   public void deleteHand(Hand hand) {
-    database.removeHand(hand);
+    mDatabase.removeHand(hand);
     hand.getRound().removeHand(hand);
   }
 
@@ -185,5 +188,15 @@ public class Application extends OnStateChangedReporter implements
   public void onStateChanged() {
     Collections.sort(mMatches);
     notifyStateChanged();
+  }
+
+  @Override
+  public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+      String key) {
+    if (key.equals(mContext.getString(R.string.pref_bonus))) {
+      mScoringSystem.setAwardBonus(sharedPreferences.getBoolean(key, true));
+    } else if (key.equals(mContext.getString(R.string.pref_points_nonbidders))) {
+      mScoringSystem.setNonBiddingPoints(sharedPreferences.getString(key, "always"));
+    }
   }
 }

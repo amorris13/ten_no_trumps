@@ -21,7 +21,7 @@ public class Round extends OnStateChangedReporter implements Comparable<Round>,
   private Date mDate;
 
   // All cached for convenience. These are not necessary to store in the SQLite
-  // database as they are derived from other values.
+  // mDatabase as they are derived from other values.
   private boolean mFinished;
   private Team mWinner;
 
@@ -31,7 +31,7 @@ public class Round extends OnStateChangedReporter implements Comparable<Round>,
   }
 
   /**
-   * To construct a hand from the database.
+   * To construct a hand from the mDatabase.
    */
   Round(long id, Match match, Date date){
     this.id = id;

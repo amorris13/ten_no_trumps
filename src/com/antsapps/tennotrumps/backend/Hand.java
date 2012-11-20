@@ -23,7 +23,7 @@ public class Hand extends OnStateChangedReporter implements Comparable<Hand> {
   // cached.
   private final boolean bidAchieved;
 
-  // For initialising from database only!
+  // For initialising from mDatabase only!
   Hand(long id,
       Round round,
       Team biddingTeam,

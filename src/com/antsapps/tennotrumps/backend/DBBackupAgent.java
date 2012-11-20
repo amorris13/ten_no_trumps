@@ -4,7 +4,7 @@ import android.app.backup.BackupAgentHelper;
 
 public class DBBackupAgent extends BackupAgentHelper {
 
-  private static final String DATABASE = "database";
+  private static final String DATABASE = "mDatabase";
 
   @Override
   public void onCreate() {
