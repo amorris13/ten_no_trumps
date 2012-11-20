@@ -351,6 +351,8 @@ public class DBAdapter extends SQLiteOpenHelper {
     values.put(COLUMN_TRICKS_WON, tricksWonByBiddingTeam);
     long time = System.currentTimeMillis();
     values.put(COLUMN_DATE, time);
+    values.put(COLUMN_POINTS_BIDDING_TEAM, pointsBiddingTeam);
+    values.put(COLUMN_POINTS_NON_BIDDING_TEAM, pointsNonBiddingTeam);
     long id = getWritableDatabase().insert(TABLE_HANDS, null, values);
     return new Hand(id, round, biddingTeam, biddingPlayer, bid,
         tricksWonByBiddingTeam, pointsBiddingTeam, pointsNonBiddingTeam,

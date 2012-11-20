@@ -20,7 +20,7 @@ public class Application extends OnStateChangedReporter implements
     OnStateChangedListener, OnSharedPreferenceChangeListener {
   private static Application instance;
 
-  private final Context mContext;
+  private final Context mAppContext;
 
   /** Should remain sorted */
   private final List<Match> mMatches;
@@ -32,20 +32,20 @@ public class Application extends OnStateChangedReporter implements
 
   public final DBAdapter mDatabase;
 
-  private Application(Context context) {
+  private Application(Context appContext) {
     super();
-    mContext = context;
+    mAppContext = appContext;
     mMatches = Lists.newArrayList();
     mPlayers = Maps.newHashMap();
     mTeams = Maps.newHashMap();
 
-    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(appContext);
     mScoringSystem = new ScoringSystem(
-        prefs.getBoolean(context.getString(R.string.pref_bonus), true),
-        prefs.getString(context.getString(R.string.pref_points_nonbidders), "always"));
+        prefs.getBoolean(appContext.getString(R.string.pref_bonus), true),
+        prefs.getString(appContext.getString(R.string.pref_points_nonbidders), "always"));
     prefs.registerOnSharedPreferenceChangeListener(this);
 
-    mDatabase = new DBAdapter(context);
+    mDatabase = new DBAdapter(appContext);
     mDatabase.initialize(mMatches, mPlayers, mTeams);
     for (Match match : mMatches) {
       match.addOnStateChangedListener(this);
@@ -55,8 +55,9 @@ public class Application extends OnStateChangedReporter implements
   }
 
   public static Application getInstance(Context context) {
-    if (instance == null || instance.mContext != context) {
-      instance = new Application(context);
+    Context appContext = context.getApplicationContext();
+    if (instance == null || instance.mAppContext != appContext) {
+      instance = new Application(appContext);
     }
     return instance;
   }
@@ -193,9 +194,9 @@ public class Application extends OnStateChangedReporter implements
   @Override
   public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
       String key) {
-    if (key.equals(mContext.getString(R.string.pref_bonus))) {
+    if (key.equals(mAppContext.getString(R.string.pref_bonus))) {
       mScoringSystem.setAwardBonus(sharedPreferences.getBoolean(key, true));
-    } else if (key.equals(mContext.getString(R.string.pref_points_nonbidders))) {
+    } else if (key.equals(mAppContext.getString(R.string.pref_points_nonbidders))) {
       mScoringSystem.setNonBiddingPoints(sharedPreferences.getString(key, "always"));
     }
   }

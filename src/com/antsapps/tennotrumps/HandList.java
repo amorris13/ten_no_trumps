@@ -101,6 +101,9 @@ public class HandList extends SherlockListActivity implements
       @Override
       public boolean onItemLongClick(AdapterView<?> parent, View view,
           final int position, long id) {
+        if (position != parent.getChildCount() - 1) {
+          return false;
+        }
         AlertDialog alert = createDeleteAlertDialog((Hand) parent
             .getItemAtPosition(position));
         vibrator.vibrate(100);
@@ -300,7 +303,10 @@ public class HandList extends SherlockListActivity implements
       teamScoreAfterBid.setText(Integer.toString(mRound.getScoreAfterHand(
           team,
           hand)));
-      if (!mostRecent) {
+      if (mostRecent) {
+        teamScoreAfterBid.setPaintFlags(teamScoreAfterBid.getPaintFlags()
+            & ~Paint.STRIKE_THRU_TEXT_FLAG);
+      } else {
         teamScoreAfterBid.setPaintFlags(teamScoreAfterBid.getPaintFlags()
             | Paint.STRIKE_THRU_TEXT_FLAG);
       }
