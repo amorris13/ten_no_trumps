@@ -7066,7 +7066,6 @@ com.antsapps.tennotrumps.RoundList$RoundArrayAdapter -> com.antsapps.tennotrumps
 com.antsapps.tennotrumps.SettingsActivity -> com.antsapps.tennotrumps.SettingsActivity:
     android.content.SharedPreferences mSharedPref -> a
     void onCreate(android.os.Bundle) -> onCreate
-    boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem) -> onOptionsItemSelected
     void onDestroy() -> onDestroy
     void onSharedPreferenceChanged(android.content.SharedPreferences,java.lang.String) -> onSharedPreferenceChanged
     void updateOrientationSummary() -> a
@@ -7110,7 +7109,7 @@ com.antsapps.tennotrumps.TeamSelector$OnTeamSelectedListener -> com.antsapps.ten
     void onTeamSelected(com.antsapps.tennotrumps.backend.Team) -> a
 com.antsapps.tennotrumps.backend.Application -> com.antsapps.tennotrumps.backend.a:
     com.antsapps.tennotrumps.backend.Application instance -> c
-    android.content.Context mContext -> d
+    android.content.Context mAppContext -> d
     java.util.List mMatches -> e
     java.util.Map mPlayers -> f
     java.util.Map mTeams -> g

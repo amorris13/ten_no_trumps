@@ -33,8 +33,8 @@ com.antsapps.tennotrumps.SpinnerResultSelector:
 com.antsapps.tennotrumps.TeamSelector:
     private static final java.lang.String TAG
 com.antsapps.tennotrumps.backend.Application:
-    82:82:public com.antsapps.tennotrumps.backend.Player getPlayer(long)
-    108:108:public com.antsapps.tennotrumps.backend.Team getTeam(long)
+    83:83:public com.antsapps.tennotrumps.backend.Player getPlayer(long)
+    109:109:public com.antsapps.tennotrumps.backend.Team getTeam(long)
 com.antsapps.tennotrumps.backend.Bid:
     public static final java.lang.String ID_TAG
     public static final int TRICKS_PER_HAND
@@ -71,8 +71,8 @@ com.antsapps.tennotrumps.backend.DBAdapter:
     private static final java.lang.String CREATE_MATCHES
     private static final java.lang.String CREATE_TEAMS
     private static final java.lang.String CREATE_PLAYERS
-    378:384:public void updateRound(com.antsapps.tennotrumps.backend.Round)
-    411:417:public void updateMatch(com.antsapps.tennotrumps.backend.Match)
+    380:386:public void updateRound(com.antsapps.tennotrumps.backend.Round)
+    413:419:public void updateMatch(com.antsapps.tennotrumps.backend.Match)
 com.antsapps.tennotrumps.backend.DBBackupAgent:
     private static final java.lang.String DATABASE
 com.antsapps.tennotrumps.backend.Hand:
