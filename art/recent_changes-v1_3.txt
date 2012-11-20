@@ -1,0 +1,11 @@
+1.3
+
+Added scoring settings.
+
+1.2
+
+Now compatible with Froyo and Gingerbread devices!
+
+Minor improvements:
+ - Back button behaviour fixed
+ - Vibrate on long press
